@@ -6,13 +6,10 @@ class NavBar extends React.Component {
         return (
             <div>
                 <NavLink to='/'>
-                    Home
+                    My Tasks
                 </NavLink>
                 <NavLink to='/info'>
                     Info
-                </NavLink>
-                <NavLink to='/menu'>
-                    Menu
                 </NavLink>
                 <NavLink to='/signup'>
                     SignUp
