@@ -81,19 +81,20 @@ class App extends React.Component {
     const tasks = this.filterArray()
 
     return (
-      <div className="App">
-        <StretchToggle showStretchFeatures={this.state.showStretchFeatures} switchStretchFeatures={this.switchStretchFeatures} />
-        <h2>My tasks</h2>
-        <CategoryFilters selectedCategory={this.state.selectedCategory} setCategory={this.setCategory} categories={CATEGORIES}/>
-        <div className="tasks">
-          <h5>Tasks</h5>
-          {this.state.showStretchFeatures? <TaskForm addTask={this.addTask} />:null}
-          <TaskList deleteTask={this.deleteTask} showDeleteButtons={this.state.showStretchFeatures} tasks={tasks}/>
+        <div className="App">
+          <StretchToggle showStretchFeatures={this.state.showStretchFeatures} switchStretchFeatures={this.switchStretchFeatures} />
+          <h2>My tasks</h2>
+          <CategoryFilters selectedCategory={this.state.selectedCategory} setCategory={this.setCategory} categories={CATEGORIES}/>
+          <div className="tasks">
+            <h5>Tasks</h5>
+            {this.state.showStretchFeatures? <TaskForm addTask={this.addTask} />:null}
+            <TaskList deleteTask={this.deleteTask} showDeleteButtons={this.state.showStretchFeatures} tasks={tasks}/>
+          </div>
         </div>
-      </div>
-    );
+    )
   }
 }
 
 
 export default App;
+
