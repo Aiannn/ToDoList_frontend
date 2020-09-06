@@ -4,7 +4,7 @@ class User extends React.Component {
     render() {
         return (
             <div>
-                Welcome, User
+                Welcome, {this.props.currentUser.username}
             </div>
         )
     }

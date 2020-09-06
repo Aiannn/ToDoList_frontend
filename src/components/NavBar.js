@@ -6,17 +6,24 @@ class NavBar extends React.Component {
         return (
             <div>
                 <NavLink to='/'>
-                    My Tasks
+                    <span>My Tasks</span>
                 </NavLink>
                 <NavLink to='/info'>
-                    Info
+                    <span>Info</span>
                 </NavLink>
                 <NavLink to='/signup'>
-                    SignUp
+                    <span>SignUp</span>
                 </NavLink>
                 <NavLink to='/user'>
-                    User
+                    <span>User</span>
                 </NavLink>
+                {this.props.currentUser ? 
+                    <span onClick={this.props.clickHandler}>Log Out</span>
+                    :
+                    <NavLink to='/login'>
+                        LogIn
+                    </NavLink>
+                }
             </div>
         )
     }

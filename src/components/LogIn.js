@@ -1,6 +1,7 @@
 import React from 'react'
+import {withRouter} from 'react-router-dom'
 
-class SignUp extends React.Component {
+class Login extends React.Component {
 
     state = {
         username: '',
@@ -21,15 +22,15 @@ class SignUp extends React.Component {
     render() {
         return(
             <div>
-                <h2>SignUp</h2>
+                <h2>Log In</h2>
                 <form onSubmit={this.submitHandler}>
                     <input type="text" name="username" placeholder="Enter Username" value={this.state.username} onChange={this.changeHandler}/>
                     <input type="text" name="password" placeholder="Enter Password" value={this.state.password} onChange={this.changeHandler}/>
-                    <input type="submit" value="Sign Up" />
+                    <input type="submit" value="Log In" />
                 </form>
             </div>
         )
     }
 }
 
-export default SignUp
+export default withRouter(Login)

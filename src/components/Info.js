@@ -1,5 +1,6 @@
 import React from 'react'
 import {Redirect} from 'react-router-dom'
+import {withRouter} from 'react-router-dom'
 
 class Info extends React.Component {
     render() {
@@ -12,11 +13,11 @@ class Info extends React.Component {
                         <p>You're able to set up timer to each of your tasks.</p>
                     </div>
                     :
-                    <Redirect to="/"/>
+                    <Redirect to="/signup"/>
                 }
             </React.Fragment>
         )
     }
 }
 
-export default Info
+export default withRouter(Info)
