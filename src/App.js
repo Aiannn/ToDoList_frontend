@@ -14,7 +14,14 @@ class App extends React.Component {
     state = {
         user: false  
     }
-    //for some reason it throws 500 code!!!???
+    
+    renderUserInfo = (updUser) => {
+        this.setState({
+            user: updUser
+        })
+    }
+
+    //This function keeps you logged in, even though you refresh
     componentDidMount() {
         const token = localStorage.getItem("token")
         if (token) {
@@ -26,6 +33,7 @@ class App extends React.Component {
             })
             .then(response => response.json())
             .then(data => {
+                console.log(data)
                 this.setState({user: data.user})
             })
         }
@@ -48,8 +56,10 @@ class App extends React.Component {
         fetch('http://localhost:3000/api/v1/users', obj)
         .then(response => response.json())
         .then(data => {
+            console.log(data.jwt)
+            localStorage.setItem('token', data.jwt)
             this.setState({
-                user: data 
+                user: data.user 
             })
         })
     }
@@ -91,11 +101,11 @@ class App extends React.Component {
             <Switch> 
                 <div>
                     <NavBar clickHandler={this.logoutHandler} currentUser={this.state.user}/>
-                    <Route exact path='/' component={MyTasks} />
+                    <Route exact path='/' render={() => <MyTasks user={this.state.user}/>} />
                     <Route exact path='/signup' render={() => <SignUp submitHandler={this.signupHandler}/>} />
                     <Route exact path='/login' render={() => <LogIn submitHandler={this.loginHandler}/>} />
                     <Route exact path='/info' render={() => <Info user={this.state.user}/>} /> 
-                    <Route exact path='/user' render={() => <User currentUser={this.state.user}/>} />
+                    <Route exact path='/user' render={() => <User renderUserInfo={this.renderUserInfo} currentUser={this.state.user}/>} />
                 </div>
             </Switch>
         )

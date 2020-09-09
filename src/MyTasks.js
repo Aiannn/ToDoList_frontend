@@ -18,14 +18,47 @@ class MyTasks extends React.Component {
     this.getAPI()
   }
 
-  getAPI = () => {
-    fetch('http://localhost:3000/tasks')
-    .then(response=>response.json())
-    .then(data => {
-      this.setState({
-        tasks: data
+  updateTask = (updTask, text) => {
+
+    let obj = {
+      method: 'PATCH',
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'applciation/json'
+      },
+      body: JSON.stringify({
+        id: updTask.id,
+        text: text 
       })
+    }
+
+    fetch(`http://localhost:3000/tasks/${updTask.id}`, obj)
+    .then(response => response.json())
+    .then(updTask => {
+      console.log(updTask)           
     })
+
+    window.location.reload() //refreshes page
+
+  }
+
+  getAPI = () => {
+    const token = localStorage.getItem("token")
+    if (token) {
+      fetch('http://localhost:3000/api/v1/profile', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }) 
+      .then(response=>response.json())
+      .then(data => {
+        console.log(data.user.tasks)
+        this.setState({
+          tasks: data.user.tasks
+        })
+      })
+    }
   }
 
   switchStretchFeatures = () => {
@@ -42,9 +75,9 @@ class MyTasks extends React.Component {
   }
 
   addTask = task => {
-    this.setState({
-      tasks: [...this.state.tasks, task]
-    })
+    // this.setState({
+    //   tasks: [...this.state.tasks, task]
+    // }) OPTIMISTIC RENDERING DOESN'T WORK BECAUSE, THE NEW TASK DOESN'T HAVE AN ID, ON WHICH DELETE METHOD RELY
 
     let obj = {
       method: 'POST',
@@ -54,13 +87,19 @@ class MyTasks extends React.Component {
       },
       body: JSON.stringify({
         text: task.text,
-        category: task.category 
+        category: task.category,
+        username: this.props.user.username 
       })
     }
 
     fetch('http://localhost:3000/tasks', obj)
     .then(resp => resp.json())
-    .then(task => console.log(task))
+    .then(task => {
+      console.log(task)
+      this.setState({
+        tasks: [...this.state.tasks, task]
+      })
+    })
   }
 
   deleteTask = task => {
@@ -69,6 +108,12 @@ class MyTasks extends React.Component {
         t => !(t.text === task.text && t.category===task.category)
       )
     })
+
+    let obj = {
+      method: 'DELETE'
+    }
+
+    fetch(`http://localhost:3000/tasks/${task.id}`, obj)
   }
 
   filterArray = () => 
@@ -89,7 +134,7 @@ class MyTasks extends React.Component {
           <div className="tasks">
             <h5>Tasks</h5>
             {this.state.showStretchFeatures? <TaskForm addTask={this.addTask} />:null}
-            <TaskList deleteTask={this.deleteTask} showDeleteButtons={this.state.showStretchFeatures} tasks={tasks}/>
+            <TaskList updateTask={this.updateTask} deleteTask={this.deleteTask} showStretchFeatures={this.state.showStretchFeatures} tasks={tasks}/>
           </div>
         </div>
     )

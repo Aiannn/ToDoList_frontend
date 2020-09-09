@@ -1,0 +1,15 @@
+#container {
+    height: 100%;
+    width: 100%;
+    display: flex /*It makes all inner divs be horisontal*/
+} 
+
+.option {
+    padding: 15px;  /* It's needs to be in %! */
+    border-radius: 20px; /*This one too */
+    background-color: bisque;
+}
+
+.option:hover {
+    background-color: aqua;
+}

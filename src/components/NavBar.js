@@ -1,27 +1,32 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import '../NavBar.css'
 
 class NavBar extends React.Component {
     render() {
         return (
-            <div>
+            <div id="container">
                 <NavLink to='/'>
-                    <span>My Tasks</span>
+                    <div className="option">My Tasks</div>
                 </NavLink>
                 <NavLink to='/info'>
-                    <span>Info</span>
+                    <div className="option">Info</div>
                 </NavLink>
                 <NavLink to='/signup'>
-                    <span>SignUp</span>
+                    <div className="option">SignUp</div>
                 </NavLink>
                 <NavLink to='/user'>
-                    <span>User</span>
+                    {this.props.currentUser ? 
+                        <div className="option">{this.props.currentUser.username}</div>
+                        :
+                        <div className="option">User</div>
+                    }
                 </NavLink>
                 {this.props.currentUser ? 
-                    <span onClick={this.props.clickHandler}>Log Out</span>
+                    <div className="option" onClick={this.props.clickHandler}>Log Out</div>
                     :
                     <NavLink to='/login'>
-                        LogIn
+                        <div className="option">LogIn</div>
                     </NavLink>
                 }
             </div>

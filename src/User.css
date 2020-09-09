@@ -1,0 +1,10 @@
+.Ava-container {
+    width: 200px;
+    height: 300px
+}
+
+.Ava-container img {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+}
