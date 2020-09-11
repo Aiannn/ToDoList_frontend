@@ -27,6 +27,11 @@ class SignUp extends React.Component {
                     <input type="text" name="password" placeholder="Enter Password" value={this.state.password} onChange={this.changeHandler}/>
                     <input type="submit" value="Sign Up" />
                 </form>
+                {this.props.signupMessage ? 
+                    <span>{this.props.signupMessage}</span>
+                    :
+                    null
+                }
             </div>
         )
     }

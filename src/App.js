@@ -13,7 +13,8 @@ class App extends React.Component {
 
     state = {
         user: false,
-        quotes: []
+        quotes: [],
+        signupMessage: ''
     }
     
     addQuote = (newQuote) => {
@@ -68,10 +69,17 @@ class App extends React.Component {
         .then(response => response.json())
         .then(data => {
             console.log(data.jwt)
-            localStorage.setItem('token', data.jwt)
-            this.setState({
-                user: data.user 
-            })
+            console.log(data)
+            if (data.jwt) {
+                localStorage.setItem('token', data.jwt)
+                this.setState({
+                    user: data.user 
+                })
+            } else {
+                this.setState({
+                    signupMessage: data.error 
+                })
+            }
         })
     }
 
@@ -117,7 +125,7 @@ class App extends React.Component {
                 <div>
                     <NavBar clickHandler={this.logoutHandler} currentUser={this.state.user}/>
                     <Route exact path='/' render={() => <MyTasks user={this.state.user}/>} />
-                    <Route exact path='/signup' render={() => <SignUp submitHandler={this.signupHandler}/>} />
+                    <Route exact path='/signup' render={() => <SignUp signupMessage={this.state.signupMessage} submitHandler={this.signupHandler}/>} />
                     <Route exact path='/login' render={() => <LogIn submitHandler={this.loginHandler}/>} />
                     <Route exact path='/info' render={() => <Info user={this.state.user}/>} /> 
                     <Route exact path='/user' render={() => <User addQuote={this.addQuote} quotes={this.state.quotes} renderUserInfo={this.renderUserInfo} currentUser={this.state.user}/>} />
