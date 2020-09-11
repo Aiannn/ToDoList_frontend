@@ -23,6 +23,9 @@ class Task extends React.Component {
     submitHandler = (e) => {
         e.preventDefault()
         this.props.updateTask(this.props.task, this.state.taskValue)
+        this.setState({
+            editing: !this.state.editing
+        })
     }
 
     render() {
@@ -36,7 +39,7 @@ class Task extends React.Component {
                         <input type="submit" value="Submit" />
                     </form>
                     :
-                    <div className="text">{this.props.task.text}</div>
+                    <div className="text">{this.state.taskValue}</div>
                 }
                 {
                     this.props.showStretchFeatures? 

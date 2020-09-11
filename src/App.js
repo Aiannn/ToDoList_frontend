@@ -12,7 +12,7 @@ import LogIn from './components/LogIn'
 class App extends React.Component {
 
     state = {
-        user: false  
+        user: false //Earlier I pass 'false' since originally there is no user, but if there localStorage it means that we have user logged in.
     }
     
     renderUserInfo = (updUser) => {
@@ -20,6 +20,7 @@ class App extends React.Component {
             user: updUser
         })
     }
+
 
     //This function keeps you logged in, even though you refresh
     componentDidMount() {
@@ -34,7 +35,9 @@ class App extends React.Component {
             .then(response => response.json())
             .then(data => {
                 console.log(data)
-                this.setState({user: data.user})
+                this.setState({
+                    user: data.user
+                })
             })
         }
         else {
@@ -81,7 +84,10 @@ class App extends React.Component {
         .then(response => response.json())
         .then(data => {
             console.log(data.jwt)
-            localStorage.setItem('token', data.jwt)
+            console.log(data)
+            if (data.jwt) {
+                localStorage.setItem('token', data.jwt)
+            }
             this.setState({
                 user: data.user
             }, () => this.props.history.push('/info'))  //Now it's working!! Next step is to find out what is an error in my dev console.

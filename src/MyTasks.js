@@ -5,6 +5,7 @@ import TaskList from './components/TaskList'
 import CategoryFilters from './components/CategoryFilters'
 import StretchToggle from './components/StretchToggle'
 import TaskForm from './components/TaskForm'
+import {Redirect} from 'react-router-dom'
 
 class MyTasks extends React.Component {
 
@@ -35,10 +36,13 @@ class MyTasks extends React.Component {
     fetch(`http://localhost:3000/tasks/${updTask.id}`, obj)
     .then(response => response.json())
     .then(updTask => {
-      console.log(updTask)           
+      console.log(updTask)    
+      // this.setState({
+      //   tasks: [...this.state.tasks]
+      // })       
     })
 
-    window.location.reload() //refreshes page
+    // window.location.reload() //refreshes page
 
   }
 
@@ -127,16 +131,22 @@ class MyTasks extends React.Component {
     const tasks = this.filterArray()
 
     return (
-        <div className="App">
-          <StretchToggle showStretchFeatures={this.state.showStretchFeatures} switchStretchFeatures={this.switchStretchFeatures} />
-          <h2>My tasks</h2>
-          <CategoryFilters selectedCategory={this.state.selectedCategory} setCategory={this.setCategory} categories={CATEGORIES}/>
-          <div className="tasks">
-            <h5>Tasks</h5>
-            {this.state.showStretchFeatures? <TaskForm addTask={this.addTask} />:null}
-            <TaskList updateTask={this.updateTask} deleteTask={this.deleteTask} showStretchFeatures={this.state.showStretchFeatures} tasks={tasks}/>
+        <React.Fragment>
+          {window.localStorage.length > 0 ? 
+          <div className="App">
+            <StretchToggle showStretchFeatures={this.state.showStretchFeatures} switchStretchFeatures={this.switchStretchFeatures} />
+            <h2>My tasks</h2>
+            <CategoryFilters selectedCategory={this.state.selectedCategory} setCategory={this.setCategory} categories={CATEGORIES}/>
+            <div className="tasks">
+              <h5>Tasks</h5>
+              {this.state.showStretchFeatures? <TaskForm addTask={this.addTask} />:null}
+              <TaskList updateTask={this.updateTask} deleteTask={this.deleteTask} showStretchFeatures={this.state.showStretchFeatures} tasks={tasks}/>
+            </div>
           </div>
-        </div>
+          :
+          <Redirect to="/signup"/>
+          }
+        </React.Fragment>
     )
   }
 }

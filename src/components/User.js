@@ -1,12 +1,28 @@
 import React from 'react'
 import '../User.css'
+import {Redirect} from 'react-router-dom'
 
 class User extends React.Component {
 
     state = {
         avatar: '',
         bio: '',
-        quoteValue: ''
+        quoteValue: '',
+        displayEditing: false,
+        displayEditingQuotes: false
+    }
+
+
+    displayEditingQuotes = () => {
+        this.setState({
+            displayEditingQuotes: !this.state.displayEditingQuotes
+        })
+    }
+
+    displayEditingHandler = () => {
+        this.setState({
+            displayEditing: !this.state.displayEditing
+        })
     }
 
     changeHandler = (e) => {
@@ -73,48 +89,75 @@ class User extends React.Component {
 
     render() {
         return (
-            <div>
-                <div>Welcome, {this.props.currentUser.username}</div>
-                <div>
-                    <span>Account data:</span>
-                    {this.props.currentUser.avatar ? 
-                        <div className="Ava-container"><img src={this.props.currentUser.avatar} alt="ava"/></div>
-                        :
-                        <div className="Ava-container"><img src="https://www.travelcontinuously.com/wp-content/uploads/2018/04/empty-avatar.png" alt="Empty avatar" /></div>
-                    }
-                    {this.props.currentUser.bio ?
-                        <div>{this.props.currentUser.bio}</div>
-                        :
-                        <div>Tell us about yourself...</div>
-                    }
-                </div>
+            <React.Fragment>
+                {window.localStorage.length > 0?
+                <div className="body">
+                    <h4>Welcome, {this.props.currentUser.username}</h4>
+                    <div>
+                        {this.props.currentUser.avatar ? 
+                            <div className="Ava-container"><img src={this.props.currentUser.avatar} alt="ava"/></div>
+                            :
+                            <div className="Ava-container"><img src="https://www.travelcontinuously.com/wp-content/uploads/2018/04/empty-avatar.png" alt="Empty avatar" /></div>
+                        }
 
-                <div>
-                    <form onSubmit={this.submitHandler}>
-                        <label>Avatar:</label>
-                        <input type="text" value={this.state.avatar} onChange={this.changeHandler} name="avatar" placeholder="Enter avatat link" />
-                        <label>Bio:</label>
-                        <input type="text" value={this.state.bio} onChange={this.changeHandler} name="bio" placeholder="Enter your bio" />
-                        <input type="submit" value="Submit" />
-                    </form>
-                </div>
+                        <div className="bio-container">
+                            <h4>Bio:</h4>
+                            {this.props.currentUser.bio ?
+                            <div>{this.props.currentUser.bio}</div>
+                            :
+                            <div>Tell us about yourself...</div>
+                            }   
+                        </div>
 
-                <div className="quotes-container">
-                    <h4>Favorite quotes:</h4>
-                    {this.props.currentUser.quotes ?
-                        <ul>{this.getQuotes()}</ul>
+                        <div>
+                            <button className="user-button" onClick={this.displayEditingHandler}>Edit Profile</button>
+                        </div>
+                    </div>
+                    
+                    
+                    {this.state.displayEditing? 
+                        <div>
+                            <form onSubmit={this.submitHandler}>
+                                <label>Avatar:</label>
+                                <input type="text" value={this.state.avatar} onChange={this.changeHandler} name="avatar" placeholder="Enter avatar link" />
+                                <label>Bio:</label>
+                                <input type="text" value={this.state.bio} onChange={this.changeHandler} name="bio" placeholder="Enter your bio" />
+                                <input type="submit" value="Submit" />
+                            </form>
+                        </div>
                         :
-                        <div>No quotes yet...</div>
+                        null
+                    }
+
+
+                    <div className="quotes-container">
+                        <h4>Favorite quotes:</h4>
+                        {this.props.currentUser.quotes ?
+                            <ul>{this.getQuotes()}</ul>
+                            :
+                            <div>No quotes yet...</div>
+                        }
+                    </div>
+                    
+                    <div>
+                        <button className="user-button" onClick={this.displayEditingQuotes}>Add Quote</button>
+                    </div>
+
+                    {this.state.displayEditingQuotes?
+                        <div>
+                            <form onSubmit={this.formSubmitHandler}>
+                                <input type="text" name="quoteValue" value={this.state.quoteValue} placeholder="Add quotes here" onChange={this.changeHandler} />
+                                <input type="submit" value="Submit" />
+                            </form>
+                        </div>
+                        :
+                        null 
                     }
                 </div>
-
-                <div>
-                    <form onSubmit={this.formSubmitHandler}>
-                        <input type="text" name="quoteValue" value={this.state.quoteValue} placeholder="type qoutes" onChange={this.changeHandler} />
-                        <input type="submit" value="Submit" />
-                    </form>
-                </div>
-            </div>
+                :
+                <Redirect to='/signup'/>
+                }
+            </React.Fragment>
         )
     }
 }
