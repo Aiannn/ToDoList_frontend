@@ -77,12 +77,19 @@ class User extends React.Component {
         .then(response => response.json())
         .then(data => {
             console.log(data)
+            this.props.addQuote(data)
         })
-        window.location.reload()
+        //window.location.reload()
     }
 
+    // getQuotes = () => {
+    //     return this.props.currentUser.quotes.map(quote => {
+    //         return <li key={quote.name} >{quote.name}</li>
+    //     })
+    // }
+
     getQuotes = () => {
-        return this.props.currentUser.quotes.map(quote => {
+        return this.props.quotes.map(quote => {
             return <li key={quote.name} >{quote.name}</li>
         })
     }
@@ -132,7 +139,7 @@ class User extends React.Component {
 
                     <div className="quotes-container">
                         <h4>Favorite quotes:</h4>
-                        {this.props.currentUser.quotes ?
+                        {this.props.quotes ? //here this.props.currentUser.quotes
                             <ul>{this.getQuotes()}</ul>
                             :
                             <div>No quotes yet...</div>

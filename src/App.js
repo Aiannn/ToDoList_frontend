@@ -12,9 +12,16 @@ import LogIn from './components/LogIn'
 class App extends React.Component {
 
     state = {
-        user: false //Earlier I pass 'false' since originally there is no user, but if there localStorage it means that we have user logged in.
+        user: false,
+        quotes: []
     }
     
+    addQuote = (newQuote) => {
+        this.setState({
+            quotes: [...this.state.quotes, newQuote]
+        })
+    }
+
     renderUserInfo = (updUser) => {
         this.setState({
             user: updUser
@@ -36,7 +43,8 @@ class App extends React.Component {
             .then(data => {
                 console.log(data)
                 this.setState({
-                    user: data.user
+                    user: data.user,
+                    quotes: data.user.quotes
                 })
             })
         }
@@ -89,7 +97,8 @@ class App extends React.Component {
                 localStorage.setItem('token', data.jwt)
             }
             this.setState({
-                user: data.user
+                user: data.user,
+                quotes: data.quotes 
             }, () => this.props.history.push('/info'))  //Now it's working!! Next step is to find out what is an error in my dev console.
         })
     }
@@ -111,7 +120,7 @@ class App extends React.Component {
                     <Route exact path='/signup' render={() => <SignUp submitHandler={this.signupHandler}/>} />
                     <Route exact path='/login' render={() => <LogIn submitHandler={this.loginHandler}/>} />
                     <Route exact path='/info' render={() => <Info user={this.state.user}/>} /> 
-                    <Route exact path='/user' render={() => <User renderUserInfo={this.renderUserInfo} currentUser={this.state.user}/>} />
+                    <Route exact path='/user' render={() => <User addQuote={this.addQuote} quotes={this.state.quotes} renderUserInfo={this.renderUserInfo} currentUser={this.state.user}/>} />
                 </div>
             </Switch>
         )
